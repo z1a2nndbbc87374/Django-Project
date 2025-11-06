@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Latest Posts</h2>
+
+<div class="row">
+
+    {% for post in posts %}
+    <div class="col-md-4 mb-4">
+
+        <div class="card h-100">
+
+            {% if post.image %}
+            <img src="{{ post.image.url }}" class="card-img-top" style="height:200px; object-fit:cover;">
+            {% endif %}
+
+            <div class="card-body">
+                <h5 class="card-title">{{ post.title }}</h5>
+                <p class="text-muted">{{ post.created_at|date:"M d, Y" }}</p>
+                <p>{{ post.excerpt|truncatewords:20 }}</p>
+
+                <a href="{{ post.get_absolute_url }}" class="btn btn-primary btn-sm">Read More</a>
+            </div>
+
+        </div>
+
+    </div>
+    {% empty %}
+        <p>No posts available.</p>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

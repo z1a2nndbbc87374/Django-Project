@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+
+<div class="row">
+
+    <div class="col-md-10 mx-auto">
+
+        <h2>{{ post.title }}</h2>
+        <p class="text-muted">{{ post.created_at|date:"F d, Y" }} | Category: 
+            <a href="{% url 'blog:category_posts' post.category.slug %}">
+                {{ post.category.title }}
+            </a>
+        </p>
+
+        {% if post.image %}
+        <img src="{{ post.image.url }}" class="img-fluid mb-3">
+        {% endif %}
+
+        <p>{{ post.content|linebreaks }}</p>
+
+        <hr>
+
+        <h4>Comments</h4>
+
+        {% for c in comments %}
+            <div class="border p-2 mb-2">
+                <strong>{{ c.name }}</strong>  
+                <span class="text-muted">{{ c.created_at|date:"M d, Y H:i" }}</span>
+                <p>{{ c.message }}</p>
+            </div>
+        {% empty %}
+            <p>No comments yet. Be the first!</p>
+        {% endfor %}
+
+        <hr>
+
+        <h4>Add a Comment</h4>
+
+        <form method="POST" action="{% url 'blog:add_comment' post.slug %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label>Name</label>
+                <input name="name" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Email</label>
+                <input name="email" type="email" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Comment</label>
+                <textarea name="message" rows="3" class="form-control" required></textarea>
+            </div>
+            <button class="btn btn-primary">Submit</button>
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

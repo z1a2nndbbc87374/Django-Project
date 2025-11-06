@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Search{% endblock %}
+
+{% block content %}
+
+<h2>Search results for "{{ query }}"</h2>
+<hr>
+
+<div class="row">
+
+    {% for post in posts %}
+    <div class="col-md-4 mb-4">
+
+        <div class="card h-100">
+            {% if post.image %}
+            <img src="{{ post.image.url }}" class="card-img-top" style="height:200px; object-fit:cover;">
+            {% endif %}
+
+            <div class="card-body">
+                <h5 class="card-title">{{ post.title }}</h5>
+                <p>{{ post.excerpt|truncatewords:20 }}</p>
+                <a href="{{ post.get_absolute_url }}" class="btn btn-primary btn-sm">Read More</a>
+            </div>
+        </div>
+
+    </div>
+    {% empty %}
+    <p>No results found.</p>
+    {% endfor %}
+
+</div>
+
+{% endblock %}
